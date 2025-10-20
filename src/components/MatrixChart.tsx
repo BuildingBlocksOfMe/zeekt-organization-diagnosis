@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { typeInfos } from '../data/results';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../locales';
 
 interface MatrixChartProps {
   abilityScore: number;
@@ -7,6 +8,8 @@ interface MatrixChartProps {
 }
 
 export function MatrixChart({ abilityScore, actionScore }: MatrixChartProps) {
+  const { language } = useLanguage();
+  const t = translations[language];
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -27,10 +30,10 @@ export function MatrixChart({ abilityScore, actionScore }: MatrixChartProps) {
 
     // 4象限を描画
     const quadrants = [
-      { x: centerX, y: 0, w: centerX, h: centerY, color: typeInfos.staff.color, label: '参謀型', alpha: 0.2 },
-      { x: 0, y: 0, w: centerX, h: centerY, color: typeInfos.commander.color, label: '指揮官型', alpha: 0.2 },
-      { x: 0, y: centerY, w: centerX, h: centerY, color: typeInfos.soldier.color, label: '兵士型', alpha: 0.2 },
-      { x: centerX, y: centerY, w: centerX, h: centerY, color: typeInfos.danger.color, label: '危険型', alpha: 0.2 },
+      { x: centerX, y: 0, w: centerX, h: centerY, color: t.typeInfos.staff.color, label: t.typeInfos.staff.name, alpha: 0.2 },
+      { x: 0, y: 0, w: centerX, h: centerY, color: t.typeInfos.commander.color, label: t.typeInfos.commander.name, alpha: 0.2 },
+      { x: 0, y: centerY, w: centerX, h: centerY, color: t.typeInfos.soldier.color, label: t.typeInfos.soldier.name, alpha: 0.2 },
+      { x: centerX, y: centerY, w: centerX, h: centerY, color: t.typeInfos.danger.color, label: t.typeInfos.danger.name, alpha: 0.2 },
     ];
 
     quadrants.forEach(q => {
@@ -60,20 +63,20 @@ export function MatrixChart({ abilityScore, actionScore }: MatrixChartProps) {
     ctx.textAlign = 'center';
 
     // 上: 働き者
-    ctx.fillText('働き者', centerX, 20);
+    ctx.fillText(t.result.axisHardworking, centerX, 20);
     // 下: 怠け者
-    ctx.fillText('怠け者', centerX, height - 10);
+    ctx.fillText(t.result.axisLazy, centerX, height - 10);
     // 左: 無能
     ctx.save();
     ctx.translate(15, centerY);
     ctx.rotate(-Math.PI / 2);
-    ctx.fillText('無能', 0, 0);
+    ctx.fillText(t.result.axisIncompetent, 0, 0);
     ctx.restore();
     // 右: 有能
     ctx.save();
     ctx.translate(width - 15, centerY);
     ctx.rotate(Math.PI / 2);
-    ctx.fillText('有能', 0, 0);
+    ctx.fillText(t.result.axisCompetent, 0, 0);
     ctx.restore();
 
     // ユーザーの位置を計算（スコアを座標に変換）
@@ -103,7 +106,7 @@ export function MatrixChart({ abilityScore, actionScore }: MatrixChartProps) {
     ctx.lineTo(x, y + 6);
     ctx.stroke();
 
-  }, [abilityScore, actionScore]);
+  }, [abilityScore, actionScore, t]);
 
   return (
     <div className="flex justify-center items-center my-8">

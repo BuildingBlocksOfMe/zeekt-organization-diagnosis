@@ -1,7 +1,8 @@
 import { DiagnosisResult } from '../types';
-import { typeInfos } from '../data/results';
 import { MatrixChart } from '../components/MatrixChart';
 import { ShareButtons } from '../components/ShareButtons';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../locales';
 
 interface ResultPageProps {
   result: DiagnosisResult;
@@ -9,7 +10,9 @@ interface ResultPageProps {
 }
 
 export function ResultPage({ result, onRestart }: ResultPageProps) {
-  const typeInfo = typeInfos[result.type];
+  const { language } = useLanguage();
+  const t = translations[language];
+  const typeInfo = t.typeInfos[result.type];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-100 px-4 py-8">
@@ -17,7 +20,7 @@ export function ResultPage({ result, onRestart }: ResultPageProps) {
         {/* 結果タイトル */}
         <div className="text-center mb-8 animate-fade-in">
           <div className="inline-block px-6 py-2 rounded-full bg-white shadow-md mb-4">
-            <span className="text-sm font-semibold text-gray-600">診断結果</span>
+            <span className="text-sm font-semibold text-gray-600">{t.result.diagnosisResult}</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
             {result.title}
@@ -32,7 +35,7 @@ export function ResultPage({ result, onRestart }: ResultPageProps) {
 
         {/* 説明カード */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">あなたの特徴</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">{t.result.yourCharacteristics}</h2>
           <p className="text-gray-700 leading-relaxed text-lg">
             {result.description}
           </p>
@@ -40,20 +43,20 @@ export function ResultPage({ result, onRestart }: ResultPageProps) {
 
         {/* マトリクス図 */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">あなたの位置</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">{t.result.yourPosition}</h2>
           <MatrixChart 
             abilityScore={result.abilityScore} 
             actionScore={result.actionScore} 
           />
           <div className="text-center text-gray-600 mt-4">
-            能力スコア: <span className="font-bold">{result.abilityScore}</span> / 
-            行動スコア: <span className="font-bold">{result.actionScore}</span>
+            {t.result.abilityScore}: <span className="font-bold">{result.abilityScore}</span> / 
+            {t.result.actionScore}: <span className="font-bold">{result.actionScore}</span>
           </div>
         </div>
 
         {/* 強み */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">💪 あなたの強み</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">{t.result.strengths}</h2>
           <ul className="space-y-3">
             {typeInfo.strengths.map((strength, index) => (
               <li key={index} className="flex items-start gap-3">
@@ -68,7 +71,7 @@ export function ResultPage({ result, onRestart }: ResultPageProps) {
 
         {/* 弱み・注意点 */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 animate-slide-up" style={{ animationDelay: '0.4s' }}>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">⚠️ 注意すべき点</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">{t.result.weaknesses}</h2>
           <ul className="space-y-3">
             {typeInfo.weaknesses.map((weakness, index) => (
               <li key={index} className="flex items-start gap-3">
@@ -83,7 +86,7 @@ export function ResultPage({ result, onRestart }: ResultPageProps) {
 
         {/* アドバイス */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 animate-slide-up" style={{ animationDelay: '0.5s' }}>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">💡 おすすめの行動指針</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">{t.result.recommendations}</h2>
           <ul className="space-y-3">
             {result.advice.map((advice, index) => (
               <li key={index} className="flex items-start gap-3">
@@ -109,7 +112,7 @@ export function ResultPage({ result, onRestart }: ResultPageProps) {
             onClick={onRestart}
             className="bg-gray-600 text-white px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
           >
-            もう一度診断する
+            {t.common.restartButton}
           </button>
         </div>
       </div>

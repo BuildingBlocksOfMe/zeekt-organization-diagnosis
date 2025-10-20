@@ -1,20 +1,12 @@
-import { Answer, DiagnosisResult, DiagnosisType } from '../types';
-import { questions } from '../data/questions';
-import { typeInfos } from '../data/results';
+import { Answer, DiagnosisResult, DiagnosisType, TypeInfo } from '../types';
 
 export function calculateScores(answers: Answer[]): { abilityScore: number; actionScore: number } {
   let abilityScore = 0;
   let actionScore = 0;
 
   answers.forEach(answer => {
-    const question = questions.find(q => q.id === answer.questionId);
-    if (question) {
-      const option = question.options.find(o => o.id === answer.optionId);
-      if (option) {
-        abilityScore += option.abilityScore;
-        actionScore += option.actionScore;
-      }
-    }
+    abilityScore += answer.abilityScore;
+    actionScore += answer.actionScore;
   });
 
   return { abilityScore, actionScore };
@@ -35,7 +27,10 @@ export function determineType(abilityScore: number, actionScore: number): Diagno
   }
 }
 
-export function generateDiagnosisResult(answers: Answer[]): DiagnosisResult {
+export function generateDiagnosisResult(
+  answers: Answer[],
+  typeInfos: Record<string, TypeInfo>
+): DiagnosisResult {
   const { abilityScore, actionScore } = calculateScores(answers);
   const type = determineType(abilityScore, actionScore);
   const typeInfo = typeInfos[type];

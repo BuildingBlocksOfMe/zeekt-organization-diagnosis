@@ -1,14 +1,19 @@
 import { useState } from 'react';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { TopPage } from './pages/TopPage';
 import { QuestionPage } from './pages/QuestionPage';
 import { ResultPage } from './pages/ResultPage';
-import { questions } from './data/questions';
+import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { translations } from './locales';
 import { Answer, DiagnosisResult } from './types';
 import { generateDiagnosisResult } from './utils/scoring';
 
 type AppState = 'top' | 'question' | 'result';
 
-function App() {
+function AppContent() {
+  const { language } = useLanguage();
+  const t = translations[language];
+  
   const [appState, setAppState] = useState<AppState>('top');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
@@ -21,16 +26,28 @@ function App() {
     setResult(null);
   };
 
-  const handleAnswer = (answer: Answer) => {
+  const handleAnswer = (optionId: string) => {
+    const currentQuestion = t.questions[currentQuestionIndex];
+    const selectedOption = currentQuestion.options.find(opt => opt.id === optionId);
+    
+    if (!selectedOption) return;
+
+    const answer: Answer = {
+      questionId: currentQuestion.id,
+      optionId: selectedOption.id,
+      abilityScore: selectedOption.abilityScore,
+      actionScore: selectedOption.actionScore,
+    };
+
     const newAnswers = [...answers, answer];
     setAnswers(newAnswers);
 
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < t.questions.length - 1) {
       // 次の質問へ
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       // 全ての質問が終了したら結果を計算
-      const diagnosisResult = generateDiagnosisResult(newAnswers);
+      const diagnosisResult = generateDiagnosisResult(newAnswers, t.typeInfos);
       setResult(diagnosisResult);
       setAppState('result');
     }
@@ -45,13 +62,15 @@ function App() {
 
   return (
     <>
+      <LanguageSwitcher />
+      
       {appState === 'top' && <TopPage onStart={handleStart} />}
       
       {appState === 'question' && (
         <QuestionPage
-          question={questions[currentQuestionIndex]}
+          question={t.questions[currentQuestionIndex]}
           currentIndex={currentQuestionIndex}
-          totalQuestions={questions.length}
+          totalQuestions={t.questions.length}
           onAnswer={handleAnswer}
         />
       )}
@@ -60,6 +79,14 @@ function App() {
         <ResultPage result={result} onRestart={handleRestart} />
       )}
     </>
+  );
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 

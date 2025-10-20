@@ -36,6 +36,8 @@ export interface TypeInfo {
 export interface Answer {
   questionId: number;
   optionId: string;
+  abilityScore: number;
+  actionScore: number;
 }
 
 

@@ -1,22 +1,26 @@
-# ゼークトの組織論診断サイト
+# ゼークトの組織論診断サイト / Seeckt's Organization Theory Diagnosis
 
 ゼークトの組織論に基づいた性格診断ツールです。10問の質問に答えて、あなたが「参謀型」「指揮官型」「兵士型」「危険型」のどのタイプに当てはまるかを診断します。
 
-## 🎯 特徴
+A personality diagnosis tool based on Seeckt's organizational theory. Answer 10 questions to discover whether you are "Staff," "Commander," "Soldier," or "Danger" type.
 
-- **10問の質問**: シナリオベースの質問で楽しく診断
-- **4つのタイプ**: ゼークトの組織論に基づく分類
-- **視覚的な結果**: マトリクス図であなたの位置を可視化
-- **SNSシェア**: Twitter、LINE、URLコピーに対応
-- **レスポンシブデザイン**: スマートフォン、タブレット、デスクトップに対応
+## 🎯 特徴 / Features
 
-## 🏗️ 技術スタック
+- **10問の質問 / 10 Questions**: シナリオベースの質問で楽しく診断 / Scenario-based questions for engaging diagnosis
+- **4つのタイプ / 4 Types**: ゼークトの組織論に基づく分類 / Classification based on Seeckt's organizational theory
+- **視覚的な結果 / Visual Results**: マトリクス図であなたの位置を可視化 / Matrix chart visualizing your position
+- **SNSシェア / SNS Sharing**: Twitter、LINE、URLコピーに対応 / Support for Twitter, LINE, and URL copying
+- **レスポンシブデザイン / Responsive Design**: スマートフォン、タブレット、デスクトップに対応 / Optimized for smartphones, tablets, and desktops
+- **多言語対応 / Multi-language Support**: 英語・日本語の切り替えが可能 / Switch between English and Japanese
 
-- **React 18** - UIライブラリ
-- **TypeScript** - 型安全性
-- **Vite** - 高速ビルドツール
-- **Tailwind CSS** - スタイリング
-- **Canvas API** - マトリクス図の描画
+## 🏗️ 技術スタック / Tech Stack
+
+- **React 18** - UIライブラリ / UI Library
+- **TypeScript** - 型安全性 / Type Safety
+- **Vite** - 高速ビルドツール / Fast Build Tool
+- **Tailwind CSS** - スタイリング / Styling
+- **Canvas API** - マトリクス図の描画 / Matrix Chart Rendering
+- **React Context** - 多言語対応 / Multi-language Support
 
 ## 📦 セットアップ
 

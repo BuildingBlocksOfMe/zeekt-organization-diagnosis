@@ -1,11 +1,13 @@
-import { Question, Answer } from '../types';
+import { Question } from '../types';
 import { ProgressBar } from '../components/ProgressBar';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../locales';
 
 interface QuestionPageProps {
   question: Question;
   currentIndex: number;
   totalQuestions: number;
-  onAnswer: (answer: Answer) => void;
+  onAnswer: (optionId: string) => void;
 }
 
 export function QuestionPage({ 
@@ -14,11 +16,11 @@ export function QuestionPage({
   totalQuestions, 
   onAnswer 
 }: QuestionPageProps) {
+  const { language } = useLanguage();
+  const t = translations[language];
+
   const handleOptionClick = (optionId: string) => {
-    onAnswer({
-      questionId: question.id,
-      optionId,
-    });
+    onAnswer(optionId);
   };
 
   return (
@@ -57,7 +59,7 @@ export function QuestionPage({
 
         {/* ヒント */}
         <p className="text-center text-sm text-gray-500">
-          直感で答えてください。正解・不正解はありません。
+          {t.question.hint}
         </p>
       </div>
     </div>
